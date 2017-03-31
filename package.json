@@ -1,0 +1,24 @@
+{
+  "name": "swagger-vue",
+  "version": "1.0.0",
+  "description": "Swagger to JS & Vue & Axios Codegen",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenweiqun/swagger-vue.git"
+  },
+  "keywords": [
+    "swagger",
+    "js",
+    "vue",
+    "codegen"
+  ],
+  "author": "chenweiqun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chenweiqun/swagger-vue/issues"
+  },
+  "homepage": "https://github.com/chenweiqun/swagger-vue#readme"
+}
