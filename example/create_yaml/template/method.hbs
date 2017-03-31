@@ -1,0 +1,15 @@
+-
+  summary: {{&summary}}
+  request: {{&methodName}}
+  method: {{&methodName}}_TYPE
+  url: {{&methodName}}URL
+  raw_url: {{&methodName}}_RAW_URL
+  params:
+  {{#parameters}}
+    {{^isSingleton}}
+  -
+   name: {{&camelCaseName}}
+   description: {{&description}}
+   required: {{&required}}
+    {{/isSingleton}}
+  {{/parameters}}

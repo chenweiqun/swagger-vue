@@ -1,0 +1,21 @@
+## {{&summary}}
+*request usage*
+```javascript
+// {{&summary}}
+let requestParams = {}
+{{#parameters}}
+  {{^isSingleton}}
+requestParams.{{&camelCaseName}} = null // {{&description}} {{requireFilter required}}
+  {{/isSingleton}}
+{{/parameters}}
+let res = await api.{{&methodName}}(requestParams)
+if (res) {
+  // TODO:
+}
+```
+*other usage*
+```javascript
+api.{{&methodName}}_TYPE()
+api.{{&methodName}}URL()
+api.{{&methodName}}_RAW_URL(requestParams)
+```
