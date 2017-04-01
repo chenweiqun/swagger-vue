@@ -1,7 +1,5 @@
-// const fs = require('fs')
 const jsonData = require('../api-docs.json')
-const parse = require('../../lib/parse.js')
-const codegen = require('../../lib/codegen.js')
+const swaggerGen = require('../../index.js')
 const fs = require('fs')
 const path = require('path')
 let opt = {
@@ -9,6 +7,5 @@ let opt = {
   moduleName: 'api',
   className: 'api'
 }
-let data = parse(opt)
-let codeResult = codegen(data)
+const codeResult = swaggerGen(opt)
 fs.writeFileSync(path.join(__dirname, '../dist/api.js'), codeResult)
