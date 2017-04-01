@@ -1,5 +1,5 @@
 // const fs = require('fs')
-const jsonData = require('../sample.json')
+const jsonData = require('../api-docs.json')
 const parse = require('../../lib/parse.js')
 const codegen = require('../../lib/codegen.js')
 const fs = require('fs')
