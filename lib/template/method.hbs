@@ -55,7 +55,6 @@ if(parameters.$queryParameters) {
 
     {{^isBodyParameter}}
         {{#isPOST}}
-            form = queryParameters;
             queryParameters = {};
         {{/isPOST}}
     {{/isBodyParameter}}
