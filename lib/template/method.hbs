@@ -53,12 +53,6 @@ if(parameters.$queryParameters) {
     });
 }
 
-    {{^isBodyParameter}}
-        {{#isPOST}}
-            queryParameters = {};
-        {{/isPOST}}
-    {{/isBodyParameter}}
-
     return request('{{toLowerCase method}}', domain + path, body, queryParameters, form, config)
 }
 
@@ -88,13 +82,6 @@ export const {{&methodName}}URL = function(parameters = {}){
             queryParameters[parameterName] = parameters.$queryParameters[parameterName]
         })
     }
-
-    {{^isBodyParameter}}
-        {{#isPOST}}
-    queryParameters = {}
-        {{/isPOST}}
-    {{/isBodyParameter}}
-
 
     let keys = Object.keys(queryParameters)
     return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')): '')
