@@ -44,7 +44,6 @@ module.exports = function(grunt) {
       }
     }
   });
-  grunt.loadNpmTasks('grunt-swagger-js-codegen');
 
   grunt.registerMultiTask('swagger-vue-codegen', function() {
     var callback = this.async();
