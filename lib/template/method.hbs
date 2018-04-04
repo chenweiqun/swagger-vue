@@ -57,10 +57,15 @@ if(parameters.$queryParameters) {
 }
 export const {{methodName}}_PARAMETERS = {
     {{#parameters}}
-        {{&camelCaseName}}: {required: {{required}}, type: '{{type}}', format: '{{format}}'},
+        {{&camelCaseName}}: {
+            {{#each this}}
+                {{#if this includeZero=false}}
+                    {{ @key }}: {{{json this}}}{{#if @last}}{{else}},{{/if}}
+                {{/if}}
+            {{/each}}
+        }{{#if @last}}{{else}},{{/if}}
     {{/parameters}}
 }
-
 export const {{&methodName}}_RAW_URL = function () {
   return '{{&path}}'
 }
