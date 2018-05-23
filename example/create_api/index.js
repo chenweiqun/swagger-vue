@@ -1,12 +1,9 @@
 let args = require('optimist').argv
-const util = require('util')
 let version = '2'
 
 if (args.v || args.version) {
   version = args.v || args.version
 }
-
-console.info('Test', util.inspect(args))
 
 if (!version) {
   console.error('Wrong version provided')
