@@ -117,7 +117,7 @@ All requests use **axios** module with promise, for more information about that 
 
 # Links
  - [swagger-js-codegen](https://github.com/wcandillon/swagger-js-codegen)
- - [axinos](https://www.npmjs.com/package/axios)
+ - [axios](https://www.npmjs.com/package/axios)
 
 # License
 
