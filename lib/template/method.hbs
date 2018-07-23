@@ -67,15 +67,12 @@ export const {{methodName}}_PARAMETERS = {
     {{/parameters}}
 }
 
-export const {{&methodName}}_META = function () {
-  return {
-    description: "{{breaklines description}}",
-    summary: "{{breaklines summary}}",
-    operationId: "{{breaklines methodName}}",
-    tags: [{{#tags}}"{{this}}"{{#if @last}}{{else}},{{/if}}{{/tags}}]
-  }
+export const {{&methodName}}_META = {
+  description: "{{breaklines description}}",
+  summary: "{{breaklines summary}}",
+  operationId: "{{breaklines methodName}}",
+  tags: [{{#tags}}"{{this}}"{{#if @last}}{{else}},{{/if}}{{/tags}}]
 }
-
 
 export const {{&methodName}}_RAW_URL = function () {
   return '{{&path}}'
