@@ -69,9 +69,10 @@ export const {{methodName}}_PARAMETERS = {
 
 export const {{&methodName}}_META = function () {
   return {
-    summary: "{{breaklines summary}}",
     description: "{{breaklines description}}",
-    operationId: "{{breaklines methodName}}"
+    summary: "{{breaklines summary}}",
+    operationId: "{{breaklines methodName}}",
+    tags: [{{#tags}}"{{this}}"{{#if @last}}{{else}},{{/if}}{{/tags}}]
   }
 }
 
