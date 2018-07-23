@@ -66,12 +66,24 @@ export const {{methodName}}_PARAMETERS = {
         }{{#if @last}}{{else}},{{/if}}
     {{/parameters}}
 }
+
+export const {{&methodName}}_META = function () {
+  return {
+    summary: "{{breaklines summary}}",
+    description: "{{breaklines description}}",
+    operationId: "{{breaklines methodName}}"
+  }
+}
+
+
 export const {{&methodName}}_RAW_URL = function () {
   return '{{&path}}'
 }
+
 export const {{&methodName}}_TYPE = function () {
   return '{{toLowerCase method}}'
 }
+
 export const {{&methodName}}URL = function(parameters = {}){
     let queryParameters = {}
     const domain = parameters.$domain ? parameters.$domain : getDomain()
