@@ -20,7 +20,9 @@ export const {{&methodName}} = function(parameters = {}) {
     {{#isQueryParameter}}
         if(parameters['{{&camelCaseName}}'] !== undefined) {
             queryParameters['{{&name}}'] = parameters['{{&camelCaseName}}']
-        }
+        } {{#if default}} else if (parameters['{{&camelCaseName}}'] === undefined) {
+            queryParameters['{{&name}}'] = {{default}}
+        } {{/if}}
     {{/isQueryParameter}}
 
     {{#isPathParameter}}
@@ -38,6 +40,12 @@ export const {{&methodName}} = function(parameters = {}) {
             form['{{&name}}'] = parameters['{{&camelCaseName}}']
         }
     {{/isFormParameter}}
+
+    {{#if minimum}}
+        if(parameters['{{&camelCaseName}}'] !== undefined && parameters['{{&camelCaseName}}'] < {{minimum}}) {
+            return Promise.reject(new Error('Parameter "{{&camelCaseName}}" value must be higher then: {{minimum}}'))
+        }
+    {{/if}}
 
     {{#required}}
         if(parameters['{{&camelCaseName}}'] === undefined) {
