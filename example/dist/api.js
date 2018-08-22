@@ -52,6 +52,8 @@ export const findPets = function(parameters = {}) {
   let form = {}
   if (parameters['tags'] !== undefined) {
     queryParameters['tags'] = parameters['tags']
+  } else if (parameters['tags'] === undefined) {
+    queryParameters['tags'] = "cool"
   }
   if (parameters['limit'] !== undefined) {
     queryParameters['limit'] = parameters['limit']
@@ -74,6 +76,7 @@ export const findPets_PARAMETERS = {
     in: "query",
     description: "tags to filter by",
     type: "array",
+    default: "cool",
     collectionFormat: "csv",
     items: {
       "type": "string"

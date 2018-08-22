@@ -43,6 +43,7 @@
             "description": "tags to filter by",
             "required": false,
             "type": "array",
+            "default": "cool",
             "collectionFormat": "csv",
             "items": {
               "type": "string"

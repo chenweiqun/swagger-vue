@@ -21,7 +21,7 @@ export const {{&methodName}} = function(parameters = {}) {
         if(parameters['{{&camelCaseName}}'] !== undefined) {
             queryParameters['{{&name}}'] = parameters['{{&camelCaseName}}']
         } {{#if default}} else if (parameters['{{&camelCaseName}}'] === undefined) {
-            queryParameters['{{&name}}'] = {{default}}
+            queryParameters['{{&name}}'] = {{{rawParam default}}}
         } {{/if}}
     {{/isQueryParameter}}
 
