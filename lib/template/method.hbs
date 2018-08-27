@@ -20,7 +20,9 @@ export const {{&methodName}} = function(parameters = {}) {
     {{#isQueryParameter}}
         if(parameters['{{&camelCaseName}}'] !== undefined) {
             queryParameters['{{&name}}'] = parameters['{{&camelCaseName}}']
-        }
+        } {{#if default}} else if (parameters['{{&camelCaseName}}'] === undefined) {
+            queryParameters['{{&name}}'] = {{{rawParam default}}}
+        } {{/if}}
     {{/isQueryParameter}}
 
     {{#isPathParameter}}
@@ -39,6 +41,12 @@ export const {{&methodName}} = function(parameters = {}) {
         }
     {{/isFormParameter}}
 
+    {{#if minimum}}
+        if(parameters['{{&camelCaseName}}'] !== undefined && parameters['{{&camelCaseName}}'] < {{minimum}}) {
+            return Promise.reject(new Error('Parameter "{{&camelCaseName}}" value must be higher then: {{minimum}}'))
+        }
+    {{/if}}
+
     {{#required}}
         if(parameters['{{&camelCaseName}}'] === undefined) {
             return Promise.reject(new Error('Missing required {{&paramType}} parameter: {{&camelCaseName}}'))
@@ -55,13 +63,33 @@ if(parameters.$queryParameters) {
 
     return request('{{toLowerCase method}}', domain + path, body, queryParameters, form, config)
 }
+export const {{methodName}}_PARAMETERS = {
+    {{#parameters}}
+        {{&camelCaseName}}: {
+            {{#each this}}
+                {{#if this includeZero=false}}
+                    {{ @key }}: {{{json this}}}{{#if @last}}{{else}},{{/if}}
+                {{/if}}
+            {{/each}}
+        }{{#if @last}}{{else}},{{/if}}
+    {{/parameters}}
+}
+
+export const {{&methodName}}_META = {
+  description: "{{breaklines description}}",
+  summary: "{{breaklines summary}}",
+  operationId: "{{breaklines methodName}}",
+  tags: [{{#tags}}"{{this}}"{{#if @last}}{{else}},{{/if}}{{/tags}}]
+}
 
 export const {{&methodName}}_RAW_URL = function () {
   return '{{&path}}'
 }
+
 export const {{&methodName}}_TYPE = function () {
   return '{{toLowerCase method}}'
 }
+
 export const {{&methodName}}URL = function(parameters = {}){
     let queryParameters = {}
     const domain = parameters.$domain ? parameters.$domain : getDomain()

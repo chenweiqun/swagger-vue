@@ -1,12 +1,19 @@
 /* eslint-disable */
 import axios from 'axios'
 import qs from 'qs'
-let domain = ''
+let domain = 'http://petstore.swagger.io/api'
+let axiosInstance = axios.create()
 export const getDomain = () => {
   return domain
 }
 export const setDomain = ($domain) => {
   domain = $domain
+}
+export const getAxiosInstance = () => {
+  return axiosInstance
+}
+export const setAxiosInstance = ($axiosInstance) => {
+  axiosInstance = $axiosInstance
 }
 export const request = (method, url, body, queryParameters, form, config) => {
   method = method.toLowerCase()
@@ -17,31 +24,25 @@ export const request = (method, url, body, queryParameters, form, config) => {
   }
   // let queryUrl = url+(keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
   if (body) {
-    return axios[method](queryUrl, body, config)
-  } else if (method === 'get') {
-    return axios[method](queryUrl, {
-      params: form
-    }, config)
+    return axiosInstance[method](queryUrl, body, config)
+  } else if (method === 'get' || method === 'delete' || method === 'head' || method === 'option') {
+    return axiosInstance[method](queryUrl, config)
   } else {
-    return axios[method](queryUrl, qs.stringify(form), config)
+    return axiosInstance[method](queryUrl, qs.stringify(form), config)
   }
 }
 /*==========================================================
  *                    A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
  ==========================================================*/
 /**
-* Returns all pets from the system that the user has access to
-Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
-    
-Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
-    
-* request: findPets
-* url: findPetsURL
-* method: findPets_TYPE
-* raw_url: findPets_RAW_URL
-     * @param tags - tags to filter by
-     * @param limit - maximum number of results to return
-*/
+ * Pets get summary
+ * request: findPets
+ * url: findPetsURL
+ * method: findPets_TYPE
+ * raw_url: findPets_RAW_URL
+ * @param tags - tags to filter by
+ * @param limit - maximum number of results to return
+ */
 export const findPets = function(parameters = {}) {
   const domain = parameters.$domain ? parameters.$domain : getDomain()
   const config = parameters.$config
@@ -51,9 +52,16 @@ export const findPets = function(parameters = {}) {
   let form = {}
   if (parameters['tags'] !== undefined) {
     queryParameters['tags'] = parameters['tags']
+  } else if (parameters['tags'] === undefined) {
+    queryParameters['tags'] = "cool"
   }
   if (parameters['limit'] !== undefined) {
     queryParameters['limit'] = parameters['limit']
+  } else if (parameters['limit'] === undefined) {
+    queryParameters['limit'] = 20
+  }
+  if (parameters['limit'] !== undefined && parameters['limit'] < 1) {
+    return Promise.reject(new Error('Parameter "limit" value must be higher then: 1'))
   }
   if (parameters.$queryParameters) {
     Object.keys(parameters.$queryParameters).forEach(function(parameterName) {
@@ -61,6 +69,40 @@ export const findPets = function(parameters = {}) {
     });
   }
   return request('get', domain + path, body, queryParameters, form, config)
+}
+export const findPets_PARAMETERS = {
+  tags: {
+    name: "tags",
+    in: "query",
+    description: "tags to filter by",
+    type: "array",
+    default: "cool",
+    collectionFormat: "csv",
+    items: {
+      "type": "string"
+    },
+    camelCaseName: "tags",
+    isQueryParameter: true,
+    cardinality: "?"
+  },
+  limit: {
+    name: "limit",
+    in: "query",
+    description: "maximum number of results to return",
+    default: 20,
+    minimum: 1,
+    type: "integer",
+    format: "int32",
+    camelCaseName: "limit",
+    isQueryParameter: true,
+    cardinality: "?"
+  }
+}
+export const findPets_META = {
+  description: "Pets get description",
+  summary: "Pets get summary",
+  operationId: "findPets",
+  tags: ["pet-store", "find-pet"]
 }
 export const findPets_RAW_URL = function() {
   return '/pets'
@@ -87,7 +129,7 @@ export const findPetsURL = function(parameters = {}) {
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
 /**
- * Creates a new pet in the store.  Duplicates are allowed
+ * 
  * request: addPet
  * url: addPetURL
  * method: addPet_TYPE
@@ -112,9 +154,26 @@ export const addPet = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     });
   }
-  form = queryParameters;
-  queryParameters = {};
   return request('post', domain + path, body, queryParameters, form, config)
+}
+export const addPet_PARAMETERS = {
+  pet: {
+    name: "pet",
+    in: "body",
+    description: "Pet to add to the store",
+    required: true,
+    schema: {
+      "$ref": "#/definitions/NewPet"
+    },
+    camelCaseName: "pet",
+    isBodyParameter: true,
+  }
+}
+export const addPet_META = {
+  description: "Creates a new pet in the store.  Duplicates are allowed",
+  summary: "",
+  operationId: "addPet",
+  tags: []
 }
 export const addPet_RAW_URL = function() {
   return '/pets'
@@ -131,12 +190,11 @@ export const addPetURL = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     })
   }
-  queryParameters = {}
   let keys = Object.keys(queryParameters)
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
 /**
- * Returns a user based on a single ID, if the user does not have access to the pet
+ * 
  * request: find_pet_by_id
  * url: find_pet_by_idURL
  * method: find_pet_by_id_TYPE
@@ -161,6 +219,24 @@ export const find_pet_by_id = function(parameters = {}) {
   }
   return request('get', domain + path, body, queryParameters, form, config)
 }
+export const find_pet_by_id_PARAMETERS = {
+  id: {
+    name: "id",
+    in: "path",
+    description: "ID of pet to fetch",
+    required: true,
+    type: "integer",
+    format: "int64",
+    camelCaseName: "id",
+    isPathParameter: true,
+  }
+}
+export const find_pet_by_id_META = {
+  description: "Returns a user based on a single ID, if the user does not have access to the pet",
+  summary: "",
+  operationId: "find_pet_by_id",
+  tags: []
+}
 export const find_pet_by_id_RAW_URL = function() {
   return '/pets/{id}'
 }
@@ -181,7 +257,7 @@ export const find_pet_by_idURL = function(parameters = {}) {
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
 /**
- * deletes a single pet based on the ID supplied
+ * 
  * request: deletePet
  * url: deletePetURL
  * method: deletePet_TYPE
@@ -205,6 +281,24 @@ export const deletePet = function(parameters = {}) {
     });
   }
   return request('delete', domain + path, body, queryParameters, form, config)
+}
+export const deletePet_PARAMETERS = {
+  id: {
+    name: "id",
+    in: "path",
+    description: "ID of pet to delete",
+    required: true,
+    type: "integer",
+    format: "int64",
+    camelCaseName: "id",
+    isPathParameter: true,
+  }
+}
+export const deletePet_META = {
+  description: "deletes a single pet based on the ID supplied",
+  summary: "",
+  operationId: "deletePet",
+  tags: []
 }
 export const deletePet_RAW_URL = function() {
   return '/pets/{id}'
