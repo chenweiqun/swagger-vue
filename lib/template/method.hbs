@@ -14,7 +14,7 @@ export const {{&methodName}} = function(parameters = {}) {
     let path = '{{&path}}'
     let body
     let queryParameters = {}
-    let form = {}
+    let formData = null
 
 {{#parameters}}
     {{#isQueryParameter}}
@@ -34,9 +34,10 @@ export const {{&methodName}} = function(parameters = {}) {
     {{/isBodyParameter}}
 
     {{#isFormParameter}}
-        if(parameters['{{&camelCaseName}}'] !== undefined) {
-            form['{{&name}}'] = parameters['{{&camelCaseName}}']
-        }
+        formData = new FormData()
+        Object.keys(parameters).forEach(key => {
+            formData.append(key, parameters[key]) 
+        })
     {{/isFormParameter}}
 
     {{#required}}
@@ -53,7 +54,7 @@ if(parameters.$queryParameters) {
     });
 }
 
-    return request('{{toLowerCase method}}', domain + path, body, queryParameters, form, config)
+    return request('{{toLowerCase method}}', domain + path, body, queryParameters, formData, config)
 }
 
 export const {{&methodName}}_RAW_URL = function () {

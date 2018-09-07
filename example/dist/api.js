@@ -1,14 +1,21 @@
 /* eslint-disable */
 import axios from 'axios'
 import qs from 'qs'
-let domain = ''
+let domain = 'http://petstore.swagger.io/api'
+let axiosInstance = axios.create()
 export const getDomain = () => {
   return domain
 }
 export const setDomain = ($domain) => {
   domain = $domain
 }
-export const request = (method, url, body, queryParameters, form, config) => {
+export const getAxiosInstance = () => {
+  return axiosInstance
+}
+export const setAxiosInstance = ($axiosInstance) => {
+  axiosInstance = $axiosInstance
+}
+export const request = (method, url, body, queryParameters, formData, config) => {
   method = method.toLowerCase()
   let keys = Object.keys(queryParameters)
   let queryUrl = url
@@ -17,13 +24,11 @@ export const request = (method, url, body, queryParameters, form, config) => {
   }
   // let queryUrl = url+(keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
   if (body) {
-    return axios[method](queryUrl, body, config)
-  } else if (method === 'get') {
-    return axios[method](queryUrl, {
-      params: form
-    }, config)
+    return axiosInstance[method](queryUrl, body, config)
+  } else if (method === 'get' || method === 'delete' || method === 'head' || method === 'option') {
+    return axiosInstance[method](queryUrl, config)
   } else {
-    return axios[method](queryUrl, qs.stringify(form), config)
+    return axiosInstance[method](queryUrl, formData, config)
   }
 }
 /*==========================================================
@@ -48,7 +53,7 @@ export const findPets = function(parameters = {}) {
   let path = '/pets'
   let body
   let queryParameters = {}
-  let form = {}
+  let formData = null
   if (parameters['tags'] !== undefined) {
     queryParameters['tags'] = parameters['tags']
   }
@@ -60,7 +65,7 @@ export const findPets = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     });
   }
-  return request('get', domain + path, body, queryParameters, form, config)
+  return request('get', domain + path, body, queryParameters, formData, config)
 }
 export const findPets_RAW_URL = function() {
   return '/pets'
@@ -100,7 +105,7 @@ export const addPet = function(parameters = {}) {
   let path = '/pets'
   let body
   let queryParameters = {}
-  let form = {}
+  let formData = null
   if (parameters['pet'] !== undefined) {
     body = parameters['pet']
   }
@@ -112,9 +117,7 @@ export const addPet = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     });
   }
-  form = queryParameters;
-  queryParameters = {};
-  return request('post', domain + path, body, queryParameters, form, config)
+  return request('post', domain + path, body, queryParameters, formData, config)
 }
 export const addPet_RAW_URL = function() {
   return '/pets'
@@ -131,7 +134,6 @@ export const addPetURL = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     })
   }
-  queryParameters = {}
   let keys = Object.keys(queryParameters)
   return domain + path + (keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
 }
@@ -149,7 +151,7 @@ export const find_pet_by_id = function(parameters = {}) {
   let path = '/pets/{id}'
   let body
   let queryParameters = {}
-  let form = {}
+  let formData = null
   path = path.replace('{id}', `${parameters['id']}`)
   if (parameters['id'] === undefined) {
     return Promise.reject(new Error('Missing required  parameter: id'))
@@ -159,7 +161,7 @@ export const find_pet_by_id = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     });
   }
-  return request('get', domain + path, body, queryParameters, form, config)
+  return request('get', domain + path, body, queryParameters, formData, config)
 }
 export const find_pet_by_id_RAW_URL = function() {
   return '/pets/{id}'
@@ -194,7 +196,7 @@ export const deletePet = function(parameters = {}) {
   let path = '/pets/{id}'
   let body
   let queryParameters = {}
-  let form = {}
+  let formData = null
   path = path.replace('{id}', `${parameters['id']}`)
   if (parameters['id'] === undefined) {
     return Promise.reject(new Error('Missing required  parameter: id'))
@@ -204,7 +206,7 @@ export const deletePet = function(parameters = {}) {
       queryParameters[parameterName] = parameters.$queryParameters[parameterName]
     });
   }
-  return request('delete', domain + path, body, queryParameters, form, config)
+  return request('delete', domain + path, body, queryParameters, formData, config)
 }
 export const deletePet_RAW_URL = function() {
   return '/pets/{id}'
