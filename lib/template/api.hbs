@@ -1,19 +1,12 @@
-/* eslint-disable */ 
-import axios from 'axios' 
-import qs from 'qs' 
-let domain = '{{&domain}}' 
-let axiosInstance = axios.create() 
+/* eslint-disable */
+import { axios }  from './axios'
+import qs from 'qs'
+let domain = ''
 export const getDomain = () => {
   return domain
 }
 export const setDomain = ($domain) => {
   domain = $domain
-}
-export const getAxiosInstance = () => {
-  return axiosInstance
-}
-export const setAxiosInstance = ($axiosInstance) => {
-  axiosInstance = $axiosInstance
 }
 export const request = (method, url, body, queryParameters, form, config)=>{
   method = method.toLowerCase()
@@ -24,11 +17,12 @@ export const request = (method, url, body, queryParameters, form, config)=>{
   }
   // let queryUrl = url+(keys.length > 0 ? '?' + (keys.map(key => key + '=' + encodeURIComponent(queryParameters[key])).join('&')) : '')
   if(body){
-      return axiosInstance[method](queryUrl,body,config)
-  } else if (method === 'get' || method === 'delete' || method === 'head' || method === 'option') {
-      return axiosInstance[method](queryUrl,config)
+      return axios[method](queryUrl,body,config)
+  } else if (method === 'get') {
+      return axios[method](queryUrl,{params: form},config)
   } else {
-      return axiosInstance[method](queryUrl,qs.stringify(form),config)
+      return axios[method](queryUrl,qs.stringify(form),config)
   }
 }
+
 {{> methods }}
