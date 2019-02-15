@@ -4,7 +4,7 @@ Swagger to JS &amp; Vue &amp; Axios Codegen
 ```shell
 npm install swagger-vue
 ```
-# Example
+# Generar api.js
 ```javascript
 const swaggerGen = require('swagger-vue')
 const jsonData = require('./swagger')
@@ -22,6 +22,25 @@ fs.writeFileSync(path.join(__dirname, '../dist/apiUbicaciones.js'), codeResult)
 fs.writeFileSync(path.join(__dirname, '../dist/axios.js'), axiosFile)
 ```
 
+# Uilizar api.js en vue
+### main.js
+```javascript
+import ubicacionesSetAxios from 'ubicaciones-client/dist/axios'
+import {setDomain as ubicacionesSetDomain} from 'ubicaciones-client/dist/apiUbicaciones'
+
+ubicacionesSetAxios(axios)
+ubicacionesSetDomain(process.env.VUE_APP_UBICACIONES_URL)
+```
+
+### componente
+```javascript
+import * as apiUbicaciones from 'ubicaciones-client/dist/apiUbicaciones'
+
+
+apiUbicaciones.getParametros().then(response => {
+      dispatch('setModelosRF', response.data)
+    })
+```
 # Links
  - [swagger-js-codegen](https://github.com/wcandillon/swagger-js-codegen)
 
