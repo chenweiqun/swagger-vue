@@ -1,66 +1,38 @@
 {
-  "_from": "swagger-vue",
-  "_id": "swagger-vue@1.0.3",
-  "_inBundle": false,
-  "_integrity": "sha1-PJ+lxrbYOuNB3Y2rEvCkFKmQAjc=",
-  "_location": "/swagger-vue",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "swagger-vue",
-    "name": "swagger-vue",
-    "escapedName": "swagger-vue",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "http://nexus.trimix.com.ar/repository/npm-group/swagger-vue/-/swagger-vue-1.0.3.tgz",
-  "_shasum": "3c9fa5c6b6d83ae341dd8dab12f0a414a9900237",
-  "_spec": "swagger-vue",
-  "_where": "C:\\Users\\jbore\\Documents\\repos\\6_ubicaciones\\ubicaciones-backend\\ubicaciones.web-services-client-javascript",
-  "author": {
-    "name": "chenweiqun"
-  },
-  "bugs": {
-    "url": "https://github.com/chenweiqun/swagger-vue/issues"
-  },
-  "bundleDependencies": false,
-  "dependencies": {
-    "handlebars": "^4.0.6",
-    "js-beautify": "^1.6.12",
-    "lodash": "^4.17.4"
-  },
-  "deprecated": false,
+  "name": "swagger-vue",
+  "version": "1.0.3",
   "description": "Swagger to JS & Vue & Axios Codegen",
-  "devDependencies": {
-    "eslint": "^3.18.0",
-    "eslint-config-standard": "^7.1.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^2.1.1"
+  "main": "index.js",
+  "scripts": {
+    "gen:api": "node example/create_api/index.js",
+    "gen:yaml": "node example/create_yaml/index.js",
+    "gen:md": "node example/create_md/index.js"
   },
-  "homepage": "https://github.com/chenweiqun/swagger-vue#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenweiqun/swagger-vue.git"
+  },
   "keywords": [
     "swagger",
     "js",
     "vue",
     "codegen"
   ],
+  "author": "chenweiqun",
   "license": "MIT",
-  "main": "index.js",
-  "name": "swagger-vue",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chenweiqun/swagger-vue.git"
+  "bugs": {
+    "url": "https://github.com/chenweiqun/swagger-vue/issues"
   },
-  "scripts": {
-    "gen:api": "node example/create_api/index.js",
-    "gen:md": "node example/create_md/index.js",
-    "gen:yaml": "node example/create_yaml/index.js"
+  "homepage": "https://github.com/chenweiqun/swagger-vue#readme",
+  "dependencies": {
+    "handlebars": "^4.0.6",
+    "js-beautify": "^1.6.12",
+    "lodash": "^4.17.4"
   },
-  "version": "1.0.3"
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-standard": "^7.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1"
+  }
 }
