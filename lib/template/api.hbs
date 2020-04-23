@@ -15,7 +15,7 @@ export const getAxiosInstance = () => {
 export const setAxiosInstance = ($axiosInstance) => {
   axiosInstance = $axiosInstance
 }
-export const request = (method, url, body, queryParameters, form, config)=>{
+export const request = (method, url, body, queryParameters, formData, config)=>{
   method = method.toLowerCase()
   let keys = Object.keys(queryParameters)
   let queryUrl = url
@@ -28,7 +28,7 @@ export const request = (method, url, body, queryParameters, form, config)=>{
   } else if (method === 'get' || method === 'delete' || method === 'head' || method === 'option') {
       return axiosInstance[method](queryUrl,config)
   } else {
-      return axiosInstance[method](queryUrl,qs.stringify(form),config)
+      return axiosInstance[method](queryUrl,formData,config)
   }
 }
 {{> methods }}
